@@ -86,88 +86,99 @@ page = st.sidebar.radio(
 )
 
 
-# -------------------- HOME --------------------
+# -------------------------------
+# Load Model
+# -------------------------------
+with open("best_model.pkl", "rb") as file:
+    model = pickle.load(file)
 
-if page=="🏠 Home":
+# -------------------------------
+# Page Configuration
+# -------------------------------
+st.set_page_config(
+    page_title="Customer Churn Prediction",
+    page_icon="🏦",
+    layout="wide"
+)
 
-    st.markdown(
-        "<div class='big-title'>Customer Churn Prediction System</div>",
-        unsafe_allow_html=True
-    )
+# -------------------------------
+# Title
+# -------------------------------
+st.title("🏦 Customer Churn Prediction")
+st.write("Predict whether a customer will leave the bank.")
 
-    st.markdown(
-        "<div class='sub-title'>Machine Learning Dashboard using Streamlit</div>",
-        unsafe_allow_html=True
-    )
+st.divider()
 
-    st.write("")
+# -------------------------------
+# Sidebar
+# -------------------------------
+st.sidebar.header("Customer Details")
 
-    c1,c2,c3,c4=st.columns(4)
+CreditScore = st.sidebar.number_input("Credit Score", 300, 900, 600)
 
-    with c1:
-        st.markdown("""
-        <div class='card'>
-        <div class='metric'>10000</div>
-        <div class='label'>Customers</div>
-        </div>
-        """,unsafe_allow_html=True)
+Geography = st.sidebar.selectbox(
+    "Geography",
+    ["France", "Germany", "Spain"]
+)
 
-    with c2:
-        st.markdown("""
-        <div class='card'>
-        <div class='metric'>87%</div>
-        <div class='label'>Accuracy</div>
-        </div>
-        """,unsafe_allow_html=True)
+Gender = st.sidebar.selectbox(
+    "Gender",
+    ["Male", "Female"]
+)
 
-    with c3:
-        st.markdown("""
-        <div class='card'>
-        <div class='metric'>10</div>
-        <div class='label'>Features</div>
-        </div>
-        """,unsafe_allow_html=True)
+Age = st.sidebar.number_input("Age", 18, 100, 35)
 
-    with c4:
-        st.markdown("""
-        <div class='card'>
-        <div class='metric'>RF</div>
-        <div class='label'>Best Model</div>
-        </div>
-        """,unsafe_allow_html=True)
+Tenure = st.sidebar.slider("Tenure", 0, 10, 5)
 
-    st.write("")
-    st.write("---")
+Balance = st.sidebar.number_input("Balance", 0.0, 300000.0, 50000.0)
 
-    left,right=st.columns([2,1])
+NumOfProducts = st.sidebar.selectbox(
+    "Number of Products",
+    [1,2,3,4]
+)
 
-    with left:
+HasCrCard = st.sidebar.selectbox(
+    "Has Credit Card",
+    [0,1]
+)
 
-        st.header("📌 Project Overview")
+IsActiveMember = st.sidebar.selectbox(
+    "Is Active Member",
+    [0,1]
+)
 
-        st.write("""
-This application predicts whether a customer will leave the bank.
+EstimatedSalary = st.sidebar.number_input(
+    "Estimated Salary",
+    0.0,
+    200000.0,
+    50000.0
+)
 
-### Features
+# -------------------------------
+# Prediction
+# -------------------------------
+if st.button("Predict"):
 
-- Interactive Dashboard
-- Exploratory Data Analysis
-- Live Prediction
-- Model Performance
-- Confusion Matrix
-- ROC Curve
-- Feature Importance
-- Professional UI
-        """)
+    customer = pd.DataFrame({
 
-    with right:
+        "CreditScore":[CreditScore],
+        "Geography":[Geography],
+        "Gender":[Gender],
+        "Age":[Age],
+        "Tenure":[Tenure],
+        "Balance":[Balance],
+        "NumOfProducts":[NumOfProducts],
+        "HasCrCard":[HasCrCard],
+        "IsActiveMember":[IsActiveMember],
+        "EstimatedSalary":[EstimatedSalary]
 
-        st.success("Dataset Loaded")
+    })
 
-        st.info("""
-Target Variable
+    prediction = model.predict(customer)[0]
 
-Exited
+    st.subheader("Prediction")
 
-Classification Problem
-        """)
+    if prediction == 1:
+        st.error("❌ Customer is likely to Exit.")
+    else:
+        st.success("✅ Customer is likely to Stay.")
