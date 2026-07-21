@@ -2,57 +2,44 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# ----------------------------
-# Page Config
-# ----------------------------
-
+# -------------------------------
+# Page Configuration
+# -------------------------------
 st.set_page_config(
     page_title="Customer Churn Prediction",
     page_icon="🏦",
     layout="wide"
 )
 
-# ----------------------------
-# Load Models
-# ----------------------------
+# -------------------------------
+# Load Model
+# -------------------------------
+try:
+    model = joblib.load("pipeline.pkl")
+except FileNotFoundError:
+    st.error("❌ pipeline.pkl not found.")
+    st.info("Place pipeline.pkl in the same folder as app.py")
+    st.stop()
 
-models = {
-    "Logistic Regression": joblib.load("churn_pipeline.pkl"),
-    "Decision Tree": joblib.load("churn_pipeline_DT.pkl"),
-    "KNN": joblib.load("churn_pipeline_KNN.pkl"),
-    "Naive Bayes": joblib.load("churn_pipeline_NB.pkl"),
-    "Random Forest": joblib.load("churn_pipeline_RF.pkl"),
-    "SVM": joblib.load("churn_pipeline_SVC.pkl")
-}
-
-# ----------------------------
+# -------------------------------
 # Title
-# ----------------------------
-
+# -------------------------------
 st.title("🏦 Customer Churn Prediction")
 
-st.write(
+st.markdown(
 """
-Predict whether a customer will leave the bank using Machine Learning.
+Predict whether a customer is likely to **Stay** or **Leave** the bank using Machine Learning.
 """
 )
 
-# ----------------------------
-# Sidebar
-# ----------------------------
+# -------------------------------
+# Sidebar Inputs
+# -------------------------------
 
-st.sidebar.title("Customer Details")
-
-selected_model = st.sidebar.selectbox(
-    "Choose Model",
-    list(models.keys())
-)
+st.sidebar.header("Customer Details")
 
 CreditScore = st.sidebar.number_input(
-    "Credit Score",
-    300,
-    900,
-    600
+    "Credit Score",300,900,600
 )
 
 Geography = st.sidebar.selectbox(
@@ -66,17 +53,11 @@ Gender = st.sidebar.selectbox(
 )
 
 Age = st.sidebar.slider(
-    "Age",
-    18,
-    100,
-    35
+    "Age",18,100,35
 )
 
 Tenure = st.sidebar.slider(
-    "Tenure",
-    0,
-    10,
-    5
+    "Tenure",0,10,5
 )
 
 Balance = st.sidebar.number_input(
@@ -104,9 +85,9 @@ EstimatedSalary = st.sidebar.number_input(
     value=50000.0
 )
 
-# ----------------------------
-# Customer Data
-# ----------------------------
+# -------------------------------
+# Create DataFrame
+# -------------------------------
 
 customer = pd.DataFrame({
 
@@ -123,62 +104,68 @@ customer = pd.DataFrame({
 
 })
 
-st.subheader("Customer Information")
+# -------------------------------
+# Display Input
+# -------------------------------
 
-st.dataframe(customer, use_container_width=True)
+st.subheader("Customer Details")
 
-# ----------------------------
+st.dataframe(customer,use_container_width=True)
+
+# -------------------------------
 # Prediction
-# ----------------------------
+# -------------------------------
 
-if st.button("Predict"):
-
-    model = models[selected_model]
+if st.button("Predict Churn"):
 
     prediction = model.predict(customer)
 
-    st.subheader("Prediction")
+    probability = model.predict_proba(customer)
 
-    st.info(f"Selected Model : {selected_model}")
+    if prediction[0]==1:
 
-    if prediction[0] == 1:
-        st.error("❌ Customer is likely to Churn")
+        st.error("Customer is likely to CHURN ❌")
+
     else:
-        st.success("✅ Customer is likely to Stay")
 
-    if hasattr(model, "predict_proba"):
+        st.success("Customer is likely to STAY ✅")
 
-        probability = model.predict_proba(customer)
+    st.subheader("Prediction Probability")
 
-        col1,col2 = st.columns(2)
+    col1,col2 = st.columns(2)
 
-        with col1:
-            st.metric(
-                "Stay Probability",
-                f"{probability[0][0]*100:.2f}%"
-            )
+    with col1:
+        st.metric(
+            "Stay Probability",
+            f"{probability[0][0]*100:.2f}%"
+        )
 
-        with col2:
-            st.metric(
-                "Churn Probability",
-                f"{probability[0][1]*100:.2f}%"
-            )
+    with col2:
+        st.metric(
+            "Churn Probability",
+            f"{probability[0][1]*100:.2f}%"
+        )
 
-# ----------------------------
+# -------------------------------
 # Footer
-# ----------------------------
+# -------------------------------
 
 st.markdown("---")
 
 st.markdown("""
-### Models Included
+### Machine Learning Models Used
 
 - Logistic Regression
 - Decision Tree
+- Random Forest
 - KNN
 - Naive Bayes
-- Random Forest
 - Support Vector Machine
 
-Developed using **Python**, **Scikit-Learn**, **Pandas**, and **Streamlit**.
+**Developed using**
+
+- Python
+- Scikit-Learn
+- Pandas
+- Streamlit
 """)
