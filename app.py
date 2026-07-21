@@ -3,7 +3,6 @@ import pandas as pd
 import joblib
 import os
 
-joblib.dump(pipeline, "pipeline.pkl")
 
 st.write("Current directory:", os.getcwd())
 st.write("Files in current directory:")
