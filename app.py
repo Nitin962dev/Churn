@@ -3,7 +3,6 @@ import pandas as pd
 import joblib
 import os
 
-model = joblib.load("pipeline.pkl")
 
 
 st.write("Current directory:", os.getcwd())
