@@ -5,9 +5,6 @@ import os
 
 
 
-st.write("Current directory:", os.getcwd())
-st.write("Files:", os.listdir())
-
 # ------------------------------
 # Page Configuration
 # ------------------------------
