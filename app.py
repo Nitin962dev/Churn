@@ -4,6 +4,9 @@ import joblib
 import os
 
 
+st.write("Current directory:", os.getcwd())
+st.write("Files in current directory:")
+st.write(os.listdir())
 
 # ------------------------------
 # Page Configuration
