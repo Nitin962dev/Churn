@@ -4,9 +4,7 @@ import joblib
 
 import os
 
-st.write("Current Directory:", os.getcwd())
-st.write("Files:", os.listdir())
-st.stop()
+
 
 model = joblib.load("pipeline.pkl")
 joblib.dump(model_RF, "pipeline.pkl")
