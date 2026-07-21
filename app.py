@@ -86,3 +86,88 @@ page = st.sidebar.radio(
 )
 
 
+# -------------------- HOME --------------------
+
+if page=="🏠 Home":
+
+    st.markdown(
+        "<div class='big-title'>Customer Churn Prediction System</div>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        "<div class='sub-title'>Machine Learning Dashboard using Streamlit</div>",
+        unsafe_allow_html=True
+    )
+
+    st.write("")
+
+    c1,c2,c3,c4=st.columns(4)
+
+    with c1:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>10000</div>
+        <div class='label'>Customers</div>
+        </div>
+        """,unsafe_allow_html=True)
+
+    with c2:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>87%</div>
+        <div class='label'>Accuracy</div>
+        </div>
+        """,unsafe_allow_html=True)
+
+    with c3:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>10</div>
+        <div class='label'>Features</div>
+        </div>
+        """,unsafe_allow_html=True)
+
+    with c4:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>RF</div>
+        <div class='label'>Best Model</div>
+        </div>
+        """,unsafe_allow_html=True)
+
+    st.write("")
+    st.write("---")
+
+    left,right=st.columns([2,1])
+
+    with left:
+
+        st.header("📌 Project Overview")
+
+        st.write("""
+This application predicts whether a customer will leave the bank.
+
+### Features
+
+- Interactive Dashboard
+- Exploratory Data Analysis
+- Live Prediction
+- Model Performance
+- Confusion Matrix
+- ROC Curve
+- Feature Importance
+- Professional UI
+        """)
+
+    with right:
+
+        st.success("Dataset Loaded")
+
+        st.info("""
+Target Variable
+
+Exited
+
+Classification Problem
+        """)
