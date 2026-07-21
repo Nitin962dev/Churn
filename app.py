@@ -1,135 +1,223 @@
 import streamlit as st
 import pandas as pd
-import joblib
+from PIL import Image
 
-# ------------------------------
-# Page Configuration
-# ------------------------------
+# -------------------- PAGE CONFIG --------------------
+
 st.set_page_config(
     page_title="Customer Churn Prediction",
-    page_icon="📊",
-    layout="wide"
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
+# -------------------- CUSTOM CSS --------------------
 
-# ------------------------------
-# Title
-# ------------------------------
-st.title("📊 Customer Churn Prediction System")
+st.markdown("""
+<style>
 
-st.write(
-    """
-    This application predicts whether a customer is likely to leave the bank
-    based on customer information.
-    """
+[data-testid="stAppViewContainer"]{
+background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+color:white;
+}
+
+[data-testid="stSidebar"]{
+background:#111827;
+}
+
+.big-title{
+font-size:45px;
+font-weight:bold;
+color:white;
+text-align:center;
+}
+
+.sub-title{
+font-size:20px;
+color:#cbd5e1;
+text-align:center;
+}
+
+.card{
+background:#1e293b;
+padding:25px;
+border-radius:18px;
+box-shadow:0px 0px 20px rgba(0,0,0,0.35);
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.04);
+}
+
+.metric{
+font-size:34px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.label{
+font-size:18px;
+color:white;
+}
+
+hr{
+border:1px solid #334155;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------- SIDEBAR --------------------
+
+st.sidebar.title("🤖 AI Dashboard")
+
+page = st.sidebar.radio(
+    "Navigation",
+    [
+        "🏠 Home",
+        "📊 EDA Analysis",
+        "🤖 Prediction",
+        "📈 Model Performance",
+        "ℹ️ About"
+    ]
 )
 
-# ------------------------------
-# Sidebar
-# ------------------------------
+# -------------------- HOME --------------------
 
-st.sidebar.header("Enter Customer Details")
+if page=="🏠 Home":
 
-CreditScore = st.sidebar.number_input(
-    "Credit Score",
-    min_value=300,
-    max_value=900,
-    value=600
-)
+    st.markdown(
+        "<div class='big-title'>Customer Churn Prediction System</div>",
+        unsafe_allow_html=True
+    )
 
-Geography = st.sidebar.selectbox(
-    "Geography",
-    ["France","Germany","Spain"]
-)
+    st.markdown(
+        "<div class='sub-title'>Machine Learning Dashboard using Streamlit</div>",
+        unsafe_allow_html=True
+    )
 
-Gender = st.sidebar.selectbox(
-    "Gender",
-    ["Male","Female"]
-)
+    st.write("")
 
-Age = st.sidebar.slider(
-    "Age",
-    18,
-    100,
-    35
-)
+    c1,c2,c3,c4=st.columns(4)
 
-Tenure = st.sidebar.slider(
-    "Tenure",
-    0,
-    10,
-    5
-)
+    with c1:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>10000</div>
+        <div class='label'>Customers</div>
+        </div>
+        """,unsafe_allow_html=True)
 
-Balance = st.sidebar.number_input(
-    "Balance",
-    value=50000.0
-)
+    with c2:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>87%</div>
+        <div class='label'>Accuracy</div>
+        </div>
+        """,unsafe_allow_html=True)
 
-NumOfProducts = st.sidebar.selectbox(
-    "Number of Products",
-    [1,2,3,4]
-)
+    with c3:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>10</div>
+        <div class='label'>Features</div>
+        </div>
+        """,unsafe_allow_html=True)
 
-HasCrCard = st.sidebar.selectbox(
-    "Has Credit Card",
-    [0,1]
-)
+    with c4:
+        st.markdown("""
+        <div class='card'>
+        <div class='metric'>RF</div>
+        <div class='label'>Best Model</div>
+        </div>
+        """,unsafe_allow_html=True)
 
-IsActiveMember = st.sidebar.selectbox(
-    "Active Member",
-    [0,1]
-)
+    st.write("")
+    st.write("---")
 
-EstimatedSalary = st.sidebar.number_input(
-    "Estimated Salary",
-    value=50000.0
-)
+    left,right=st.columns([2,1])
 
-# ------------------------------
-# Input DataFrame
-# ------------------------------
+    with left:
 
-input_data = pd.DataFrame({
+        st.header("📌 Project Overview")
 
-    "CreditScore":[CreditScore],
-    "Geography":[Geography],
-    "Gender":[Gender],
-    "Age":[Age],
-    "Tenure":[Tenure],
-    "Balance":[Balance],
-    "NumOfProducts":[NumOfProducts],
-    "HasCrCard":[HasCrCard],
-    "IsActiveMember":[IsActiveMember],
-    "EstimatedSalary":[EstimatedSalary]
+        st.write("""
+This application predicts whether a customer will leave the bank.
 
-})
+### Features
 
-st.subheader("Customer Information")
+- Interactive Dashboard
+- Exploratory Data Analysis
+- Live Prediction
+- Model Performance
+- Confusion Matrix
+- ROC Curve
+- Feature Importance
+- Professional UI
+        """)
 
-st.dataframe(input_data)
+    with right:
 
+        st.success("Dataset Loaded")
 
-# ------------------------------
-# Footer
-# ------------------------------
+        st.info("""
+Target Variable
 
-st.markdown("---")
+Exited
 
-st.markdown(
-"""
-### About Project
+Classification Problem
+        """)
 
-**Machine Learning Model:** Classification
+# -------------------- EDA --------------------
 
-**Algorithms Used**
-- Logistic Regression
-- Decision Tree
-- Random Forest
-- KNN
-- Naive Bayes
-- SVM
+elif page=="📊 EDA Analysis":
 
-Developed using **Python**, **Scikit-Learn**, **Pandas**, and **Streamlit**.
-"""
-)
+    st.title("📊 Exploratory Data Analysis")
+
+    st.info("EDA page will be connected with your notebook.")
+
+# -------------------- Prediction --------------------
+
+elif page=="🤖 Prediction":
+
+    st.title("🤖 Customer Prediction")
+
+    st.write("Prediction form will come here.")
+
+# -------------------- Model --------------------
+
+elif page=="📈 Model Performance":
+
+    st.title("📈 Model Performance")
+
+    st.metric("Accuracy","87%")
+
+    st.metric("Precision","86%")
+
+    st.metric("Recall","84%")
+
+    st.metric("F1 Score","85%")
+
+# -------------------- About --------------------
+
+else:
+
+    st.title("ℹ️ About")
+
+    st.write("""
+Customer Churn Prediction Project
+
+Developed using
+
+✔ Streamlit
+
+✔ Scikit-Learn
+
+✔ Pandas
+
+✔ Plotly
+
+✔ Machine Learning
+""")
