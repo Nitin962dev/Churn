@@ -11,10 +11,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# ------------------------------
-# Load Model
-# ------------------------------
-model = joblib.load("pipeline.pkl")
 
 # ------------------------------
 # Title
@@ -113,27 +109,6 @@ st.subheader("Customer Information")
 
 st.dataframe(input_data)
 
-# ------------------------------
-# Prediction
-# ------------------------------
-
-if st.button("Predict"):
-
-    prediction = model.predict(input_data)
-
-    probability = model.predict_proba(input_data)
-
-    st.subheader("Prediction Result")
-
-    if prediction[0] == 1:
-        st.error("❌ Customer is likely to Churn.")
-    else:
-        st.success("✅ Customer is likely to Stay.")
-
-    st.subheader("Prediction Probability")
-
-    st.write(f"Stay Probability : **{probability[0][0]*100:.2f}%**")
-    st.write(f"Churn Probability : **{probability[0][1]*100:.2f}%**")
 
 # ------------------------------
 # Footer
