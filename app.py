@@ -221,3 +221,21 @@ Developed using
 
 ✔ Machine Learning
 """)
+
+
+import subprocess
+import streamlit as st
+
+if st.button("Run Notebook"):
+    subprocess.run([
+        "jupyter",
+        "nbconvert",
+        "--to",
+        "notebook",
+        "--execute",
+        "classification_EDA_Churn.ipynb",
+        "--output",
+        "executed_output.ipynb"
+    ])
+
+    st.success("Notebook Executed Successfully!")
