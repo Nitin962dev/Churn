@@ -103,6 +103,21 @@ st.subheader("Customer Details")
 
 st.dataframe(customer,use_container_width=True)
 
+# ----------------------------
+# Load Models
+# ----------------------------
+
+models = {
+    "Logistic Regression": joblib.load("churn_pipeline.pkl"),
+    "Decision Tree": joblib.load("churn_pipeline_DT.pkl"),
+    "KNN": joblib.load("churn_pipeline_KNN.pkl"),
+    "Naive Bayes": joblib.load("churn_pipeline_NB.pkl"),
+    "Random Forest": joblib.load("churn_pipeline_RF.pkl"),
+    "SVM": joblib.load("churn_pipeline_SVC.pkl")
+}
+
+
+
 # -------------------------------
 # Prediction
 # -------------------------------
