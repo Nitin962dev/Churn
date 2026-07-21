@@ -2,8 +2,9 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-joblib.dump(pipeline, "pipeline.pkl")
 
+
+model = joblib.load("pipeline.pkl")
 # ------------------------------
 # Page Configuration
 # ------------------------------
