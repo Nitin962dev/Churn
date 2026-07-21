@@ -5,6 +5,7 @@ import joblib
 
 
 model = joblib.load("pipeline.pkl")
+
 # ------------------------------
 # Page Configuration
 # ------------------------------
