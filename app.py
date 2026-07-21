@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+joblib.dump(pipeline, "pipeline.pkl")
+
 # ------------------------------
 # Page Configuration
 # ------------------------------
