@@ -15,7 +15,7 @@ st.set_page_config(
 # Load Model
 # -------------------------------
 try:
-    model = joblib.load("pipeline.pkl")
+    model = joblib.load("churn_pipeline.pkl")
 except FileNotFoundError:
     st.error("❌ pipeline.pkl not found.")
     st.info("Place pipeline.pkl in the same folder as app.py")
