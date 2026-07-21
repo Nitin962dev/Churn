@@ -1,6 +1,14 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
+
+
+joblib.dump(pipeline, "pipeline.pkl")
+
+
+st.write("Current directory:", os.getcwd())
+st.write("Files:", os.listdir())
 
 # ------------------------------
 # Page Configuration
